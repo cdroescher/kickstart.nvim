@@ -187,6 +187,23 @@ require('lazy').setup({
     },
   },
 
+    {
+      "akinsho/nvim-bufferline.lua",
+      event = "BufReadPre",
+      wants = "nvim-web-devicons",
+      config = {
+      options = {
+      numbers = "none",
+      diagnostics = "nvim_lsp",
+      separator_style = "slant" or "padded_slant",
+      show_tab_indicators = true,
+      show_buffer_close_icons = false,
+      show_close_icon = false,
+    },
+    }
+        
+     
+    },
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -300,11 +317,11 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sg', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
+vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 -- [[ Configure Treesitter ]]
@@ -521,5 +538,32 @@ cmp.setup {
   },
 }
 
+local keymap = vim.api.nvim_set_keymap
+local default_opts = { noremap = true, silent = true }
+local expr_opts = { noremap = true, expr = true, silent = true }
+--- Better indent
+keymap("v", "<", "<gv", default_opts)
+keymap("v", ">", ">gv", default_opts)
+keymap("n", "<S-h>", ":bprevious<CR>", default_opts)
+keymap("n", "<S-l>", ":bnext<CR>", default_opts)
+
+-- Cancel search highlighting with ESC
+keymap("n", "<ESC>", ":nohlsearch<Bar>:echo<CR>", default_opts)
+
+-- Move selected line / block of text in visual mode
+keymap("x", "K", ":move '<-2<CR>gv-gv", default_opts)
+keymap("x", "J", ":move '>+1<CR>gv-gv", default_opts)
+
+-- Resizing panes
+keymap("n", "<Left>", ":vertical resize +1<CR>", default_opts)
+keymap("n", "<Right>", ":vertical resize -1<CR>", default_opts)
+keymap("n", "<Up>", ":resize -1<CR>", default_opts)
+keymap("n", "<Down>", ":resize +1<CR>", default_opts)
+
+-- Window switching
+keymap("n", "<C-l>", "<C-W>l", default_opts)
+keymap("n", "<C-h>", "<C-W>h", default_opts)
+keymap("n", "<C-j>", "<C-W>j", default_opts)
+keymap("n", "<C-k>", "<C-W>k", default_opts)
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
