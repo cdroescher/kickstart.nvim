@@ -84,7 +84,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -108,7 +108,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -122,7 +122,8 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+          { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
       end,
@@ -187,23 +188,45 @@ require('lazy').setup({
     },
   },
 
-    {
-      "akinsho/nvim-bufferline.lua",
-      event = "BufReadPre",
-      wants = "nvim-web-devicons",
-      config = {
+  {
+    "akinsho/nvim-bufferline.lua",
+    event = "BufReadPre",
+    wants = "nvim-web-devicons",
+    config = {
       options = {
-      numbers = "none",
-      diagnostics = "nvim_lsp",
-      separator_style = "slant" or "padded_slant",
-      show_tab_indicators = true,
-      show_buffer_close_icons = false,
-      show_close_icon = false,
-    },
+        numbers = "none",
+        diagnostics = "nvim_lsp",
+        separator_style = "slant" or "padded_slant",
+        show_tab_indicators = true,
+        show_buffer_close_icons = false,
+        show_close_icon = false,
+      },
     }
-        
-     
+  },
+
+  {
+    "kyazdani42/nvim-tree.lua",
+    requires = {
+      "kyazdani42/nvim-web-devicons",
     },
+    cmd = { "NvimTreeToggle", "NvimTreeClose" },
+    config = {
+      disable_netrw = true,
+      hijack_netrw = true,
+      view = {
+        number = true,
+        relativenumber = true,
+      },
+      filters = {
+        custom = { ".git" },
+      },
+      actions = {
+        open_file = {
+          resize_window = false
+        }
+      },
+    },
+  },
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -566,4 +589,7 @@ keymap("n", "<C-h>", "<C-W>h", default_opts)
 keymap("n", "<C-j>", "<C-W>j", default_opts)
 keymap("n", "<C-k>", "<C-W>k", default_opts)
 -- The line beneath this is called `modeline`. See `:help modeline`
+vim.keymap.set('n', '<space>fc', function()
+  vim.lsp.buf.format { async = true }
+end, default_opts)
 -- vim: ts=2 sts=2 sw=2 et
