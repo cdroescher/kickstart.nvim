@@ -216,6 +216,7 @@ require('lazy').setup({
       view = {
         number = true,
         relativenumber = true,
+        width = 55,
       },
       filters = {
         custom = { ".git" },
@@ -592,4 +593,10 @@ keymap("n", "<C-k>", "<C-W>k", default_opts)
 vim.keymap.set('n', '<space>fc', function()
   vim.lsp.buf.format { async = true }
 end, default_opts)
+local function open_nvim_tree()
+
+  -- open the tree
+  require("nvim-tree.api").tree.open()
+end
+vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
 -- vim: ts=2 sts=2 sw=2 et
