@@ -72,6 +72,9 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  'tpope/vim-commentary',
+  {'akinsho/toggleterm.nvim', version = "*", config = true},
+
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -203,6 +206,7 @@ require('lazy').setup({
       },
     }
   },
+  {'ggandor/lightspeed.nvim'},
 
   {
     "kyazdani42/nvim-tree.lua",
@@ -589,6 +593,13 @@ keymap("n", "<C-l>", "<C-W>l", default_opts)
 keymap("n", "<C-h>", "<C-W>h", default_opts)
 keymap("n", "<C-j>", "<C-W>j", default_opts)
 keymap("n", "<C-k>", "<C-W>k", default_opts)
+-- Better escape using jk in insert and terminal mode
+keymap("i", "jk", "<ESC>", default_opts)
+keymap("t", "jk", "<C-\\><C-n>", default_opts)
+
+
+vim.keymap.set('n', 'tf', ':NvimTreeFocus<CR>',{ desc = 'Nvim[T]ree[F]ocus', noremap=true, silent=true })
+keymap("n", "gl", "G?.<CR>", default_opts)
 -- The line beneath this is called `modeline`. See `:help modeline`
 vim.keymap.set('n', '<space>fc', function()
   vim.lsp.buf.format { async = true }
